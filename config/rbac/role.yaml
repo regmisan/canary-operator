@@ -17,24 +17,14 @@ rules:
   resources:
   - canaryrollouts
   verbs:
-  - create
-  - delete
   - get
   - list
-  - patch
   - update
   - watch
-- apiGroups:
-  - rollout.example.com
-  resources:
-  - canaryrollouts/finalizers
-  verbs:
-  - update
 - apiGroups:
   - rollout.example.com
   resources:
   - canaryrollouts/status
   verbs:
   - get
-  - patch
   - update
