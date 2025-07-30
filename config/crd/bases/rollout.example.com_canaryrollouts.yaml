@@ -1,0 +1,90 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.18.0
+  name: canaryrollouts.rollout.example.com
+spec:
+  group: rollout.example.com
+  names:
+    kind: CanaryRollout
+    listKind: CanaryRolloutList
+    plural: canaryrollouts
+    singular: canaryrollout
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: CanaryRollout is the Schema for the canaryrollouts API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: CanaryRolloutSpec defines the desired state of CanaryRollout
+            properties:
+              canaryIngress:
+                description: CanaryIngress is the name of the Ingress whose "canary-weight"
+                  annotation will be patched
+                type: string
+              stableIngress:
+                description: StableIngress is the name of the Ingress handling 100%
+                  traffic pre-rollout
+                type: string
+              steps:
+                description: Steps defines the weight+pause sequence for the rollout
+                items:
+                  description: RolloutStep describes one weight change and optional
+                    pause
+                  properties:
+                    pauseSeconds:
+                      description: PauseSeconds is how long (in seconds) to wait after
+                        setting this weight
+                      format: int32
+                      type: integer
+                    weight:
+                      description: Weight is the percentage of traffic to send to
+                        the canary Ingress
+                      format: int32
+                      type: integer
+                  required:
+                  - weight
+                  type: object
+                type: array
+            required:
+            - canaryIngress
+            - stableIngress
+            - steps
+            type: object
+          status:
+            description: CanaryRolloutStatus defines the observed state of CanaryRollout
+            properties:
+              completed:
+                description: Completed will be true after the final weight has been
+                  applied
+                type: boolean
+              currentStep:
+                description: CurrentStep is the index into Spec.Steps that has most
+                  recently been applied
+                format: int32
+                type: integer
+            type: object
+        type: object
+    served: true
+    storage: true

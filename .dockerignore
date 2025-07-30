@@ -1,0 +1,15 @@
+# Ignore Git metadata and local IDE cruft
+.git
+.gitignore
+.vscode/
+.idea/
+
+# Ignore builder output and scripts
+bin/
+hack/
+test/
+
+# Miscellaneous
+Dockerfile*
+Makefile
+README.md

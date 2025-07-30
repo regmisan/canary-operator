@@ -1,0 +1,9 @@
+apiVersion: rollout.example.com/v1alpha1
+kind: CanaryRollout
+metadata:
+  labels:
+    app.kubernetes.io/name: canary-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: canaryrollout-sample
+spec:
+  # TODO(user): Add fields here
